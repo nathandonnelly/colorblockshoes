@@ -10,7 +10,6 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
-firebase.config.js
 
 # macOS
 .DS_Store

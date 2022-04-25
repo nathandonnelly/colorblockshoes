@@ -1,0 +1,21 @@
+import { initializeApp } from "firebase/app"
+import { getFirestore } from "firebase/firestore"
+import { getFunctions } from "firebase/functions"
+
+export const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+console.log("App initialized.", app);
+export const db = getFirestore(app);
+console.log('Database initialized.', db);
+const functions = getFunctions(app);
+console.log("Functions initialized.", functions);

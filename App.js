@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import './firebase.config'
+import store from "./redux/stores/store";
+import AppContainer from './AppContainer'
+import { Provider as StoreProvider } from "react-redux";
+import { decode, encode } from 'base-64'
+import { StripeProvider } from '@stripe/stripe-react-native';
 
-export default function App() {
+const App = () => {
+
+  if (!global.btoa) {
+    global.btoa = encode;
+  }
+    
+  if (!global.atob) {
+    global.atob = decode;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StoreProvider store={store}>
+      <AppContainer />
+    </StoreProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
