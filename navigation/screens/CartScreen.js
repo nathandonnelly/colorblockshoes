@@ -2,10 +2,9 @@ import React from 'react'
 import { Image, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native'
 import { Button, Divider, Headline, IconButton, Subheading, Text, useTheme } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
-import { handleCartShipping, handleCartSubtotal } from '../../utils/handleCartCosts'
+import { handleCartShippingMessage, handleCartSubtotal } from '../../utils/handleCartCosts'
 import { handleProductName } from '../../utils/handleProductName';
 import { addOneQuantity, removeOneQuantity, removeFromCart } from '../../redux/slices/storeSlice';
-import { handleCheckout } from '../../utils/handleCheckout';
 import ProductCategory from '../../components/submodules/ProductCategory';
 import Footer from '../../components/layouts/Footer';
 
@@ -83,7 +82,7 @@ const CartScreen = (props) => {
             </View>
           )}
         </View>
-        <View style={{margin: 20, flex: 1,}}>
+        <View style={{margin: 20, minWidth: 350,}}>
           <View>
             <Headline style={[styles.headline,]}>Summary</Headline>
           </View>
@@ -93,11 +92,11 @@ const CartScreen = (props) => {
           </View>
           <View style={[styles.flexDirectionRow, styles.justifyContentSpaceBetween, ]}>
             <Subheading>Shipping</Subheading>
-            <Subheading>{handleCartShipping(cartContents)}</Subheading>
+            <Subheading>{handleCartShippingMessage(cartContents)}</Subheading>
           </View>
           <View style={[styles.flexDirectionRow, styles.justifyContentSpaceBetween, ]}>
             <Subheading>Taxes</Subheading>
-            <Subheading>Calc. at Checkout</Subheading>
+            <Subheading>Included</Subheading>
           </View>
           <View style={{marginTop: 20,}}>
             <Button

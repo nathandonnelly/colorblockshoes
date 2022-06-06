@@ -61,7 +61,7 @@ const Header = (props) => {
               <Logo navigation={props.navigation} route={props.route} size={logoSize} />
               )
             }
-          <Appbar.Content subtitle={randomMessage} titleStyle={{display: 'none',}} style={{margin: 0, padding: 0,}} />
+          <Appbar.Content subtitle={randomMessage.toLowerCase() + "."} titleStyle={{display: 'none',}} style={{margin: 0, padding: 0,}} />
           <Appbar.Action
             color={Theme.colors.white}
             icon="bag-personal"

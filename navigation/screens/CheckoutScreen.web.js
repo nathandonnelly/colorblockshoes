@@ -1,44 +1,137 @@
 import React, { useEffect, useState, } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Button, Headline, Subheading, Surface, Text, TextInput, useTheme, } from 'react-native-paper'
 import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
+import { Elements, PaymentElement } from '@stripe/react-stripe-js'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import { handleCartShipping, handleCartSubtotal, } from '../../utils/handleCartCosts'
+import InjectedCheckoutForm from '../../components/modules/CheckoutForm.web'
+import Footer from '../../components/layouts/Footer'
+
+
+const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLISHABLE_KEY);
 
 const CheckoutScreen = (props) => {
 
-  const [clientSecret, setClientSecret] = useState("");
-  const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLISHABLE_KEY);
-  const cartContents = useSelector(state => state.store.cartContents);
+  console.log("Stripe promise:", stripePromise);
+  
+  // Define hooks.
+  const Theme = useTheme();
 
-  // Create PaymentIntent as soon as the page loads
+  // Define state.
+  const [clientSecret, setClientSecret] = useState("");
+  const cartContents = useSelector(state => state.store.cartContents);
+  const currency = useSelector(state => state.store.currency);
+
+  // Calculate amounts for payment.
+  const cartSubtotal = handleCartSubtotal(cartContents);
+  const cartShipping = handleCartShipping(cartContents);
+  const paymentIntentAmount = parseInt((cartSubtotal + cartShipping).toString().replace(".", ""));
+
+  // Payment variables.
+  const stripeBlue = "#82baf0";
+  const stripeGrey = "#e6e6e6";
+
+  // Create Stripe PaymentIntent and fetch client secret from server.
   useEffect(() => {
 
-    console.log("Cart Contents:", cartContents);
+    if (cartSubtotal > 0) {
+      console.log("Payment Intent Amount:", paymentIntentAmount);
+  
+      axios.post('https://cors-proxy.nathandonnelly.workers.dev/?u=https://pay.nathandonnelly.com/stripe.php', {
+        paymentIntentAmount: paymentIntentAmount,
+        currency: currency,
+      })
+      .then(response => response.data)
+      .then(data => {
+        console.log("Payment intent received from server.", data);
+        setClientSecret(data.clientSecret);
+      })
+      .catch(error => console.log(error))
+      .finally(() => {});
+    }
 
-    axios.post('https://pay.nathandonnelly.com/stripe.php', {
-      auth: {
-        username: process.env.NATHAN_DONNELLY_BASIC_AUTH_USER,
-        password: process.env.NATHAN_DONNELLY_BASIC_AUTH_PASSWORD,
+    return () => {
+      setClientSecret("");
+      console.log("Clean up for creating payment intent.");
+    };
+
+  }, [paymentIntentAmount]);
+
+
+  // Create Stripe elements options object.
+  const stripeOptions = {
+    clientSecret: clientSecret,
+    appearance: {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: Theme.colors.secondary,
       },
-    })
-    .then(response => response.data)
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => console.log(error))
-    .finally(() => {});
+    },
+  };
 
-  }, []);
 
-  return (
-    <View>
-      <Text>CheckoutScreen.web</Text>
-    </View>
+  // Render method.
+  if (clientSecret === "" && cartContents.length === 0) {
+    return (
+      <ScrollView>
+        <View style={{margin: 20,}}>
+          <Headline style={[styles.headline,]}>Checkout</Headline>
+          <View style={{marginVertical: 20,}}>
+            <Text>No items in cart.</Text>
+          </View>
+        </View>
+        <Footer navigation={props.navigation} route={props.route} />
+      </ScrollView>
+    )
+  } else if (clientSecret === "" && cartContents.length !== 0) {
+    return (
+      <ScrollView>
+        <View style={{margin: 20,}}>
+          <Headline style={[styles.headline,]}>Checkout</Headline>
+          <View style={{marginVertical: 50,}}>
+            <ActivityIndicator />
+          </View>
+        </View>
+        <Footer navigation={props.navigation} route={props.route} />
+      </ScrollView>
+    )
+  } else return (
+    <ScrollView>
+      <View style={{margin: 20,}}>
+        <Headline style={[styles.headline,]}>Checkout</Headline>
+        <View style={{marginVertical: 20,}}>
+          {clientSecret && (            
+            <Elements stripe={stripePromise} options={stripeOptions}>
+              <InjectedCheckoutForm />
+            </Elements>
+          )}
+        </View>
+      </View>
+      <Footer navigation={props.navigation} route={props.route} />
+    </ScrollView>
   )
 }
 
 export default CheckoutScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  flexOne: {
+    flex: 1,
+  },
+  headline: {
+    fontSize: 30,
+    fontWeight: "600",
+    lineHeight: 30,
+  },
+  textInput: {
+    elevation: 2,
+    backgroundColor: "#fff",
+  },
+})

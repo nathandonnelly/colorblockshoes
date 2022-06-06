@@ -1,21 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  products: null,
   cartContents: [],
+  currency: 'usd',
+  clientSecret: "",
+  products: null,
 }
 
 export const storeSlice = createSlice({
   name: "store",
   initialState,
   reducers: {
-    updateProducts: (state, action) => {
-      if (state.products === null) {
-        state.products = action.payload;
-      } else {
-        state.products = state.products.concat(action.payload);
-      }
-    },
 
     addToCart: (state, action) => {
       if (state.cartContents.length === 0) {
@@ -74,11 +69,34 @@ export const storeSlice = createSlice({
           state.cartContents.splice(i, 1);
         }
       }
-    }
+    },
+
+    updateClientSecret: (state, action) => {
+      state.clientSecret === action.payload;
+    },
+
+    updateCurrency: (state, action) => {
+      state.currency === action.payload;
+    },
+
+    updateProducts: (state, action) => {
+      if (state.products === null) {
+        state.products = action.payload;
+      } else {
+        state.products = state.products.concat(action.payload);
+      }
+    },
 
   },
 });
 
-export const { updateProducts, addToCart, addOneQuantity, removeOneQuantity, removeFromCart, } = storeSlice.actions
+export const {
+  addToCart,
+  addOneQuantity,
+  removeOneQuantity,
+  removeFromCart,
+  updateCurrency,
+  updateProducts,
+} = storeSlice.actions
 
 export default storeSlice.reducer

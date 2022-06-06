@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Headline, useTheme } from 'react-native-paper'
+import { ActivityIndicator, Headline, useTheme } from 'react-native-paper'
 
 const SplashScreen = (props) => {
 

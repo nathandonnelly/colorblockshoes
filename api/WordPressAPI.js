@@ -1,10 +1,12 @@
 import axios from "axios";
 import { WORDPRESS_URL } from "../data/constants"
 
+// Defines WordPress API.
 export const WordPressAPI = axios.create({
   baseURL: WORDPRESS_URL + "/wp-json/wp/v2",
 })
 
+// Defines WooCommerce API.
 export const WooCommerceAPI = axios.create({
   baseURL: WORDPRESS_URL + "/wp-json/wc/v3",
   auth: {
@@ -32,6 +34,36 @@ export const getProducts = async (pageNum) => {
   .finally(() => {  })
   return productData;
 };
+
+// Create an order.
+export const createOrder = async ( 
+  paymentMethod,
+  paymentMethodTitle,
+  isPaid,
+  billingObject,
+  shippingObject,
+  lineItemsArray,
+  shippingLinesArray 
+) => {
+  const createdOrder = await WooCommerceAPI.post("/orders", {
+    params: {
+      payment_method: paymentMethod,
+      payment_method_title: paymentMethodTitle,
+      set_paid: isPaid,
+      billing: billingObject,
+      shipping: shippingObject,
+      line_items: lineItemsArray,
+      shipping_lines: shippingLinesArray,
+    }
+  })
+  .then(response => response.data)
+  .then(data => {
+    return data
+  })
+  .catch(error => { console.error(error) })
+  .finally(() => {})
+  return createdOrder
+}
 
 // Fetch ACF content on specified page.
 export const getPageACF = async (pageSlug) => {

@@ -20,7 +20,7 @@ const ProductScreen = (props) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(null);
+  const [SnackbarMessage, setSnackbarMessage] = useState(null);
   const productImageSize = Dimensions.width > 400 ? 300 : 200;
   
   // Checks to see if there's a product and it matches the slug.
@@ -31,7 +31,6 @@ const ProductScreen = (props) => {
 
     return () => { 
       setProduct(null);
-      setSelectedSize(null);
       console.log("Clean up for slug change.");
     }
   }, [products, slug]);
@@ -99,34 +98,46 @@ const ProductScreen = (props) => {
     }
   }
 
+  // Size to variation.
+  const findProductSizeVariation = () => {
+    let indexOfSelectedSize = null;
+    for (let i = 0; i < availableSizes.length; i++) {
+      if (selectedSize === availableSizes[i]) {
+        indexOfSelectedSize = i;
+      }
+    }
+    return product.variations[indexOfSelectedSize]
+  }
+
   // Cart functions.
   const handleAddToCart = () => {
-
+    const selectedVariation = findProductSizeVariation(); 
     const cartObject = {
       product: product,
       size: selectedSize,
       quantity: selectedQuantity,
+      variation: selectedVariation,
     }
 
     if (product.categories[0].name.toLowerCase().includes("shoes") && selectedSize !== null) {
       dispatch(addToCart(cartObject));
       setSnackbarMessage("You added " + selectedQuantity + " " + product.name + " in size " + selectedSize + " to your bag.");
-      onToggleSnackBar();
+      onToggleSnackbar();
     } else if (product.categories[0].name.toLowerCase().includes("shoes") === false) {
       dispatch(addToCart(cartObject));
       setSnackbarMessage("You added " + selectedQuantity + " " + product.name + " to your bag.");
-      onToggleSnackBar();
+      onToggleSnackbar();
     } else {
       setSnackbarMessage("Error adding item to cart. Maybe you forgot to select your size.");
-      onToggleSnackBar();
+      onToggleSnackbar();
       return;
     }
 
   }
 
-  // Handle snackbar.
-  const onToggleSnackBar = () => setIsSnackbarVisible(!isSnackbarVisible);
-  const onDismissSnackBar = () => {
+  // Handle Snackbar.
+  const onToggleSnackbar = () => setIsSnackbarVisible(!isSnackbarVisible);
+  const onDismissSnackbar = () => {
     setIsSnackbarVisible(false);
     setSnackbarMessage(null);
   };
@@ -242,20 +253,20 @@ const ProductScreen = (props) => {
               color: Theme.colors.white,
             },
             onPress: () => {
-              onDismissSnackBar();
+              onDismissSnackbar();
             },
             style: {
               backgroundColor: Theme.colors.colorblockRedDark,
             },
           }}
           duration={2000}
-          onDismiss={onDismissSnackBar}
+          onDismiss={onDismissSnackbar}
           visible={isSnackbarVisible}
           style={{
             backgroundColor: Theme.colors.background,
           }}
         >
-          <Text>{snackbarMessage}</Text>
+          <Text>{SnackbarMessage}</Text>
         </Snackbar>
       </Portal>
     </ScrollView>

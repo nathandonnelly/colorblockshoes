@@ -44,5 +44,7 @@ export const AppDarkTheme = {
     diztroYellow: "#ffff00",
     diztroYellowDark: "#c7cc00",
     diztroYellowLight: "#ffff5a",
+    stripeActiveOutline: "#c4d6e9",
+    stripeOutline: "#e6e6e6",
   },
 };

@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Appearance, } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper'
 import { NavigationContainer } from '@react-navigation/native'
-import { AppDefaultTheme } from './themes/AppDefaultTheme'
-import { AppDarkTheme } from './themes/AppDarkTheme'
-import { APP_NAME } from './data/constants'
-import AppNavigator from './AppNavigator'
-import SplashScreen from './navigation/screens/SplashScreen'
-import LoadingScreen from './navigation/screens/LoadingScreen'
-import { getProducts } from './api/WordPressAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateIsLoading } from './redux/slices/appSlice'
-import { updateProducts } from './redux/slices/storeSlice'
+import AppNavigator from './AppNavigator'
+import { getProducts } from '../api/WordPressAPI';
+import { APP_NAME } from '../data/constants'
+import SplashScreen from '../navigation/screens/SplashScreen'
+import LoadingScreen from '../navigation/screens/LoadingScreen'
+import { updateIsLoading } from '../redux/slices/appSlice'
+import { updateProducts } from '../redux/slices/storeSlice'
+import { AppDarkTheme } from '../themes/AppDarkTheme'
+import { AppDefaultTheme } from '../themes/AppDefaultTheme'
 
 const AppContainer = (props) => {
 
@@ -32,6 +32,7 @@ const AppContainer = (props) => {
         CartScreen: "cart",
         CheckoutScreen: "checkout",
         HomeScreen: "/",
+        PaymentCompleteScreen: "payment-complete",
         ProductScreen: "products/:slug",
         ProductAttributesScreen: "attributes/:attribute",
         ProductCategoryScreen: "categories/:category",
@@ -54,12 +55,16 @@ const AppContainer = (props) => {
   useEffect(async () => {
     getProducts(getProductsPageNum)
     .then(data => {
-      if (data.length !== 0) {
-        dispatch(updateProducts(data));
-        console.log("Fetched products dispatched to store.", data)
-        setGetProductsPageNum(getProductsPageNum + 1);
-        dispatch(updateIsLoading(false));
-      } else return;
+      if (data) {
+        if (data.length !== 0) {
+          dispatch(updateProducts(data));
+          console.log("Fetched products dispatched to store.", data)
+          setGetProductsPageNum(getProductsPageNum + 1);
+          dispatch(updateIsLoading(false));
+        } else return;
+      } else {
+        console.error("Error fetching products.");
+      };
     })
     .catch((error) => { console.error(error) })
     .finally(() => { })
@@ -81,7 +86,7 @@ const AppContainer = (props) => {
               `${APP_NAME}`,
           }}
         >
-          <SplashScreen />
+          <LoadingScreen />
         </NavigationContainer>
       </PaperProvider>
     )

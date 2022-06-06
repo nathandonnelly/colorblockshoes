@@ -6,11 +6,20 @@ export const handleCartSubtotal = (cartContents) => {
   return parseFloat(cartSubtotal.toFixed(2));
 }
 
-export const handleCartShipping = (cartContents) => {
+export const handleCartShippingMessage = (cartContents) => {
   let cartSubtotal = handleCartSubtotal(cartContents);
   if (cartSubtotal > 100) {
     return "Free"
   } else if (cartSubtotal === 0) {
     return "Free"
   } else return "$10";
+}
+
+export const handleCartShipping = (cartContents) => {
+  let cartSubtotal = handleCartSubtotal(cartContents);
+  if (cartSubtotal > 100) {
+    return 0
+  } else if (cartSubtotal === 0) {
+    return 10;
+  } else return 10;
 }

@@ -36,86 +36,29 @@ const GetItOnGooglePlay = (props) => {
         clipRule="evenodd"
         fill="#fff"
       />
-      <LinearGradient
-        id="SVGID_1_"
-        gradientUnits="userSpaceOnUse"
-        x1={1682.1077}
-        y1={1339.4783}
-        x2={1624.2924}
-        y2={1309.6345}
-        gradientTransform="matrix(11.64 0 0 -22.55 -18705.596 30554.37)"
-      >
-        <Stop offset={0} stopColor="#00a0ff" />
-        <Stop offset={0.006569999} stopColor="#00a1ff" />
-        <Stop offset={0.2601} stopColor="#00beff" />
-        <Stop offset={0.5122} stopColor="#00d2ff" />
-        <Stop offset={0.7604} stopColor="#00dfff" />
-        <Stop offset={1} stopColor="#00e3ff" />
-      </LinearGradient>
       <Path
         d="M418.4 302.1c-11.6 12.5-18.3 31.6-18.3 56.6v886.7c0 25 6.7 44.1 18.7 56.1l3.1 2.7 496.8-496.8v-11.1L421.5 299.4l-3.1 2.7z"
         fillRule="evenodd"
         clipRule="evenodd"
-        fill="url(#SVGID_1_)"
+        fill="#00d2ff"
       />
-      <LinearGradient
-        id="SVGID_2_"
-        gradientUnits="userSpaceOnUse"
-        x1={1712.6624}
-        y1={1274.8376}
-        x2={1606.5613}
-        y2={1274.8376}
-        gradientTransform="matrix(9.145 0 0 -7.7 -14305.538 10618.251)"
-      >
-        <Stop offset={0} stopColor="#ffe000" />
-        <Stop offset={0.4087} stopColor="#ffbd00" />
-        <Stop offset={0.7754} stopColor="orange" />
-        <Stop offset={1} stopColor="#ff9c00" />
-      </LinearGradient>
       <Path
         d="M1084 973.5L918.3 807.8v-11.6L1084 630.5l3.6 2.2 196 111.4c56.1 31.6 56.1 83.8 0 115.8l-196 111.4-3.6 2.2z"
         fillRule="evenodd"
         clipRule="evenodd"
-        fill="url(#SVGID_2_)"
+        fill="#ffcc00"
       />
-      <LinearGradient
-        id="SVGID_3_"
-        gradientUnits="userSpaceOnUse"
-        x1={1707.4414}
-        y1={1290.0475}
-        x2={1646.682}
-        y2={1211.2225}
-        gradientTransform="matrix(15.02 0 0 -11.5775 -24650.229 15829.648)"
-      >
-        <Stop offset={0} stopColor="#ff3a44" />
-        <Stop offset={1} stopColor="#c31162" />
-      </LinearGradient>
       <Path
         d="M1087.6 971.3L918.3 802l-499.9 499.9c18.3 19.6 49 21.8 83.3 2.7l585.9-333.3"
         fillRule="evenodd"
         clipRule="evenodd"
-        fill="url(#SVGID_3_)"
+        fill="#00f076"
       />
-      <LinearGradient
-        id="SVGID_4_"
-        gradientUnits="userSpaceOnUse"
-        x1={1660.6357}
-        y1={1365.6676}
-        x2={1687.767}
-        y2={1330.4501}
-        gradientTransform="matrix(15.02 0 0 -11.5715 -24650.229 15809.992)"
-      >
-        <Stop offset={0} stopColor="#32a071" />
-        <Stop offset={0.0685} stopColor="#2da771" />
-        <Stop offset={0.4762} stopColor="#15cf74" />
-        <Stop offset={0.8009} stopColor="#06e775" />
-        <Stop offset={1} stopColor="#00f076" />
-      </LinearGradient>
       <Path
         d="M1087.6 632.7L501.7 299.9c-34.3-19.6-65.1-16.9-83.3 2.7L918.3 802l169.3-169.3z"
         fillRule="evenodd"
         clipRule="evenodd"
-        fill="url(#SVGID_4_)"
+        fill="#f93647"
       />
       <Path
         d="M1084 967.7l-581.9 330.6c-32.5 18.7-61.5 17.4-80.2.4l-3.1 3.1 3.1 2.7c18.7 16.9 47.7 18.3 80.2-.4L1088 971.3l-4-3.6z"
