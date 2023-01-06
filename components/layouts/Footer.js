@@ -60,14 +60,14 @@ const Footer = (props) => {
           {
             Platform.OS === "web" ? (
               <View>
-                <View style={[styles.alignItemsCenter, styles.flexDirectionRow,]}>
+                {/* <View style={[styles.alignItemsCenter, styles.flexDirectionRow,]}>
                   <View style={{marginTop: 2, marginRight: 5,}}>
                     <DownloadOnTheAppStore width={120} height={40} />
                   </View>
                   <View style={{marginRight: 5,}}>
                     <GetItOnGooglePlay width={132} height={44} />
                   </View>
-                </View>
+                </View> */}
                 <View style={[styles.alignItemsCenter, styles.flexDirectionRow, {marginTop: 10,}]}>
                   <IconButton color={isWebTrafficSecure ? "green" : "red"} icon="shield" onPress={() => {}} size={14} style={{margin: 0, marginRight: 10, padding: 0,}} />
                   <Subheading style={{fontSize: 14}}>{isWebTrafficSecure ? "Secured with SSL" : "Not Secured with SSL"}</Subheading>

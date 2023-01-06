@@ -1,21 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Image, SafeAreaView, StyleSheet, useWindowDimensions, View } from 'react-native'
 import { Appbar, Avatar, TouchableRipple, useTheme, } from 'react-native-paper'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { handleRandomMessage } from '../../utils/handleRandomText'
+import { StatusBar } from 'expo-status-bar'
+import { getAuth, onAuthStateChanged, } from "firebase/auth";
+import { shippingLocations } from '../../data/shipping'
+import { updateCurrency } from '../../redux/slices/storeSlice'
 import Logo from '../icons/Logo'
-import {StatusBar} from 'expo-status-bar'
+import { updateUserCurrency } from '../../redux/slices/userSlice'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../config/firebase.config'
 
 const Header = (props) => {
 
+  // Hooks.
+  const auth = getAuth();
+  const dispatch = useDispatch();
   const Dimensions = useWindowDimensions();
   const Theme = useTheme();
+  
+  // Global state.
+  const currency = useSelector(state => state.store.currency);
   const products = useSelector(state => state.store.products);
-  const [randomProductNum, setRandomProductNum] = useState(null);
-  const [randomMessage, setRandomMessage] = useState("");
+
+  // Component state.
+  const [ avatarSource, setAvatarSource ] = useState("");
+  const [ flag, setFlag ] = useState()
+  const [ randomProductNum, setRandomProductNum ] = useState(null);
+  const [ randomMessage, setRandomMessage ] = useState("");
+
+  // Calculations.
   const rootElevation = Dimensions.width < 768 ? 4 : 0;
   const logoSize = Dimensions.width > 768 ? 20 : 10;
 
+  useEffect(() => {
+    if (currency === "usd") {
+      setFlag(shippingLocations[1].flag);
+    } else {
+      setFlag(shippingLocations[0].flag);
+    }
+  }, [currency])
 
   // Sets two random products for the header bar.
   useEffect(() => {
@@ -30,6 +55,36 @@ const Header = (props) => {
     }
   }, []);
 
+  // Sets avatar image source & currency on auth state change.
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const currentUser = auth.currentUser;
+        setAvatarSource(currentUser.photoURL);
+      } else {
+        setAvatarSource("");
+      }
+    });
+  }, [auth]);
+
+  // Handles pushing currency update to user document in db, and updating local state.
+  const handleCurrencyUpdate = async (currency) => {
+    const updatedCurrency = currency === "usd" ? "cad" : "usd";
+    if (auth.currentUser) {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(docRef, {
+        userCurrency: updatedCurrency,
+      })
+      .then(() => {
+        dispatch(updateUserCurrency(updatedCurrency));
+      });
+    }
+    dispatch(updateCurrency(updatedCurrency));
+    props.navigation.navigate("HomeScreen");
+  };
+
+
+  // Render.
   if (products === null) {
     return (
       <View></View>
@@ -52,7 +107,10 @@ const Header = (props) => {
                       onPress={() => {props.navigation.navigate("ProductScreen", {slug: item.slug})}}
                       style={{borderRadius: 2, padding: 1,}}
                     >
-                      <Image source={{ uri: item.images[1].src }} style={{height: 30, width: 30, margin: 1,}} />
+                      <Image
+                        source={{ uri: item.images[1].src }}
+                        style={{height: 30, width: 30, margin: 1,}}
+                      />
                     </TouchableRipple>
                   )}
                 />
@@ -61,7 +119,30 @@ const Header = (props) => {
               <Logo navigation={props.navigation} route={props.route} size={logoSize} />
               )
             }
-          <Appbar.Content subtitle={randomMessage.toLowerCase() + "."} titleStyle={{display: 'none',}} style={{margin: 0, padding: 0,}} />
+          <Appbar.Content
+            subtitle={randomMessage.toLowerCase() + "."}
+            titleStyle={{display: 'none',}}
+            style={{margin: 0, padding: 0,}}
+          />
+          <TouchableRipple
+            onPress={() => {
+              handleCurrencyUpdate(currency);
+            }}
+            style={{
+              margin: 5,
+              borderRadius: Theme.roundness,
+            }}
+          >
+            <Image
+              source={{
+                uri: flag,
+              }}
+              style={{
+                height: 40,
+                width: 40,
+              }}
+            />
+          </TouchableRipple>
           <Appbar.Action
             color={Theme.colors.white}
             icon="bag-personal"
@@ -70,8 +151,15 @@ const Header = (props) => {
           />
           {
             Dimensions.width > 768 ? (
-              <TouchableRipple onPress={() => {}} style={{borderRadius: "50%", marginRight: 5,}}>
-                <Avatar.Image size={35} />
+              <TouchableRipple
+                onPress={() => {props.navigation.navigate("AccountScreen")} }
+                style={{borderRadius: "50%", marginRight: 5,}}
+              >
+                {
+                  auth.currentUser && auth.currentUser.photoURL !== null ? 
+                  <Avatar.Image size={35} source={{uri: avatarSource}} /> : 
+                  <Avatar.Icon size={35} icon="account" />
+                }
               </TouchableRipple>
             ) : (
               <Appbar.Action icon="menu" onPress={() => props.navigation.toggleDrawer()} />

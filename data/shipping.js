@@ -2,7 +2,12 @@ export const shippingLocations = [
   {
     country: "Canada",
     abbreviation: "CA",
+    flag: require('../assets/images/png/flags/cad.png'),
     states: [
+    {
+      name: "Select Your Province",
+      abbreviation: "",  
+    },
       {
         name: "Alberta",
         abbreviation: "AB",
@@ -56,7 +61,12 @@ export const shippingLocations = [
   {
     country: "United States",
     code: "US",
-    abbreviation: [
+    flag: require('../assets/images/png/flags/usd.png'),
+    states: [
+    {
+        name: "Select Your State",
+        abbreviation: "",  
+    },
       {
           name: "Alabama",
           abbreviation: "AL"

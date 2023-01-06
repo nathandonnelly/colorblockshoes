@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cartContents: [],
   currency: 'usd',
-  clientSecret: "",
   products: null,
 }
 
@@ -45,6 +44,31 @@ export const storeSlice = createSlice({
       }
     },
 
+    clearCart: (state) => {
+      state.cartContents = [];
+    },
+
+    mergeCart: (state, action) => {
+      // Checks if item is in cart and adds quantity.
+      let productIDsInCart = []
+      state.cartContents.forEach(item => {
+        productIDsInCart.push(item.product.id);
+      });
+      action.payload.forEach(item => {
+        for (let i = 0; i < state.cartContents.length; i++) {
+          if (
+            state.cartContents[i].product.id === item.product.id &&
+            state.cartContents[i].size === item.size
+          ) {
+            state.cartContents[i].quantity = state.cartContents[i].quantity + item.quantity;
+          }
+        }
+        if (!productIDsInCart.includes(item.product.id)) {
+          state.cartContents.push(item);
+        }
+      })
+    },
+
     removeOneQuantity: (state, action) => {
       for (let i = 0; i < state.cartContents.length; i++) {
         if (
@@ -71,12 +95,8 @@ export const storeSlice = createSlice({
       }
     },
 
-    updateClientSecret: (state, action) => {
-      state.clientSecret === action.payload;
-    },
-
     updateCurrency: (state, action) => {
-      state.currency === action.payload;
+      state.currency = action.payload;
     },
 
     updateProducts: (state, action) => {
@@ -93,6 +113,8 @@ export const storeSlice = createSlice({
 export const {
   addToCart,
   addOneQuantity,
+  clearCart,
+  mergeCart,
   removeOneQuantity,
   removeFromCart,
   updateCurrency,

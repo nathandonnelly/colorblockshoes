@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, } from 'react-native'
-import { Searchbar } from 'react-native-paper'
+import { Searchbar, TextInput } from 'react-native-paper'
 
 const SiteSearch = (props) => {
 

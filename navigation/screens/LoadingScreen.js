@@ -7,7 +7,7 @@ const LoadingScreen = (props) => {
   const Theme = useTheme();
 
   return (
-    <View style={[styles.container,]}>
+    <View style={[styles.container, {backgroundColor: Theme.colors.background,}]}>
       <Headline style={[styles.headline, {}]}>Colorblock Shoes</Headline>
       <View style={[styles.flexDirectionRow]}>
         <ActivityIndicator color={Theme.colors.colorblockRed} size={20} style={{margin: 10,}}/>

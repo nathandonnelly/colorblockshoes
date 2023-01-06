@@ -3,6 +3,8 @@ import { useWindowDimensions } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import MainDrawerContent from '../navigation/drawers/MainDrawerContent'
 import Header from '../components/layouts/Header'
+// Imported screens.
+import AccountScreen from '../navigation/screens/AccountScreen.js'
 import CartScreen from '../navigation/screens/CartScreen'
 import CheckoutScreen from '../navigation/screens/CheckoutScreen'
 import HomeScreen from '../navigation/screens/HomeScreen'
@@ -31,29 +33,20 @@ const AppNavigator = (props) => {
           borderRightWidth: 0,
           borderTopWidth: 0,
           elevation: 0,
+          width: 320,
         },
       }}
     >
-      <Drawer.Screen name="CartScreen" component={CartScreen} options={{title: "Cart", }} />
-      <Drawer.Screen name="CheckoutScreen" component={CheckoutScreen} options={{title: "Checkout", }} />
-      <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{title: "Home", }} />
-      <Drawer.Screen
-        name="PaymentCompleteScreen"
-        component={PaymentCompleteScreen}
-        options={{title: "Payment Complete"}}
-      />
-      <Drawer.Screen name="ProductScreen" component={ProductScreen} options={{title: "Product", }} />
-      <Drawer.Screen 
-        name="ProductAttributesScreen"
-        component={ProductAttributesScreen}
-      />
-      <Drawer.Screen
-        name="ProductCategoryScreen"
-        component={ProductCategoryScreen}
-        options={{title: "Product Category", }}
-      />
-      <Drawer.Screen name="SearchScreen" component={SearchScreen} options={{title: "Search",}} />
-      <Drawer.Screen name="ShopScreen" component={ShopScreen} options={{title: "Shop",}} />
+      <Drawer.Screen name="AccountScreen" component={AccountScreen} options={{ title: "Account", }} />
+      <Drawer.Screen name="CartScreen" component={CartScreen} options={{ title: "Cart", }} />
+      <Drawer.Screen name="CheckoutScreen" component={CheckoutScreen} options={{ title: "Checkout", }} />
+      <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{ title: "Home", }} />
+      <Drawer.Screen name="PaymentCompleteScreen" component={PaymentCompleteScreen} options={{ title: "Payment Complete"}} />
+      <Drawer.Screen name="ProductScreen" component={ProductScreen} options={{ title: "Product", }} />
+      <Drawer.Screen name="ProductAttributesScreen" component={ProductAttributesScreen} options={{ title: "Product Attributes", }}/>
+      <Drawer.Screen name="ProductCategoryScreen" component={ProductCategoryScreen} options={{ title: "Product Category", }} />
+      <Drawer.Screen name="SearchScreen" component={SearchScreen} options={{ title: "Search", }} />
+      <Drawer.Screen name="ShopScreen" component={ShopScreen} options={{ title: "Shop", }} />
     </Drawer.Navigator>
   )
 }

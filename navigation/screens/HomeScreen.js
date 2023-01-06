@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, FlatList, ScrollView, StyleSheet, View } from 'react-native'
-import { Button, Headline, Subheading, Surface, Text, TouchableRipple, useTheme } from 'react-native-paper'
+import { ActivityIndicator, Button, Headline, Subheading, Surface, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import ProductCard from '../../components/modules/ProductCard'
 import Footer from '../../components/layouts/Footer'
@@ -11,7 +11,7 @@ const HomeScreen = (props) => {
 
   const Theme = useTheme();
   const products = useSelector(state => state.store.products);
-  const [pageACF, setPageACF] = useState({});
+  const [ pageACF, setPageACF ] = useState({});
 
   // Get page ACF and push to state.
   useEffect(async () => {
@@ -32,6 +32,7 @@ const HomeScreen = (props) => {
 
   return (
     <ScrollView>
+      {/* The hero banner is wrapped in this Surface tag. */}
       <Surface>
         <TouchableRipple
           onPress={() => {props.navigation.navigate("ShopScreen")}}
@@ -44,7 +45,7 @@ const HomeScreen = (props) => {
             ]}
           >
             <Image
-              source={{uri: pageACF?.bannerImage}}
+              source={{uri: pageACF?.hero_banner_image}}
               style={{
                 margin: 20,
                 maxHeight: 400,
@@ -55,18 +56,30 @@ const HomeScreen = (props) => {
             />
             <View style={[styles.alignItemsCenter, styles.flexWrap]}>
               <View style={[styles.flexOne, {margin: 20,}]}>
-                <Headline style={[styles.bold, {fontSize: 60, lineHeight: 60,}]}>{pageACF?.bannerHeadline}</Headline>
-                <Subheading>{pageACF?.bannerSubheading}</Subheading>
+                {
+                  !pageACF?.hero_banner_headline ?
+                  (
+                    <View style={[ styles.alignItemsCenter, styles.flexOne, styles.justifyContentCenter, { margin: 20,} ]}>
+                      {/* <ActivityIndicator /> */}
+                    </View>
+                  ) :
+                  (
+                    <View>
+                      <Headline style={[styles.bold, {fontSize: 60, lineHeight: 60,}]}>{pageACF?.hero_banner_headline}</Headline>
+                      <Subheading>{pageACF?.hero_banner_subheading}</Subheading>
+                    </View>
+                  )
+                }
                 <View style={[styles.flexDirectionRow, {marginTop: 5,}]}>
                   <Button
                     mode="contained"
-                    onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "womens"})}}
+                    onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "womens-footwear"})}}
                   >
                     Shop Women's
                   </Button>
                   <Button
                     mode="contained"
-                    onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "mens"}) }}
+                    onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "mens-footwear"}) }}
                     style={{marginHorizontal: 10, backgroundColor: Theme.colors.accent}}
                   >
                     Shop Men's
@@ -77,6 +90,7 @@ const HomeScreen = (props) => {
           </View>
         </TouchableRipple>
       </Surface>
+      {/* The new in stock component is wrapped in this View tag. */}
       <View style={{marginTop: 20,}}>
         <Headline style={[styles.bold, { marginHorizontal: 20, marginTop: 10,}]}>New In Stock.</Headline>
         <FlatList 
@@ -90,6 +104,70 @@ const HomeScreen = (props) => {
           )}
         />
       </View>
+      {/* The shop mens and women's component is wrapped in this Surface tag. */}
+      <Surface style={[styles.flexDirectionRow, styles.flexWrap, styles.justifyContentSpaceBetween, {}]}>
+        <TouchableRipple
+          onPress={() => {
+            props.navigation.navigate("ProductCategoryScreen", {category: "mens-footwear"})
+          }}
+          style={{
+            backgroundColor: Theme.colors.colorblockBlue,
+            borderRadius: Theme.roundness,
+            flex: 1,
+            height: 300,
+            margin: 10,
+            minWidth: 300,
+          }}
+        >
+          <View>
+            <View style={{backgroundColor: Theme.colors.surface, borderTopRadius: Theme.roundness, padding: 10,}}>
+              <Headline style={[styles.bold, {fontSize: 20, lineHeight: 20,}]}>Shop by Men's.</Headline>
+            </View>
+            <View style={[styles.alignItemsCenter, styles.flexOne, styles.justifyContentCenter,]}>
+              <Image
+                source={{uri: pageACF?.shop_by_mens_image}}
+                style={{
+                  maxHeight: 400,
+                  minHeight: 280,
+                  maxWidth: 400,
+                  minWidth: 280,
+                }}
+              />
+            </View>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple
+          onPress={() => {
+            props.navigation.navigate("ProductCategoryScreen", {category: "womens-footwear"})
+          }}
+          style={{
+            backgroundColor: Theme.colors.colorblockRed,
+            borderRadius: Theme.roundness,
+            flex: 1,
+            height: 300,
+            margin: 10,
+            minWidth: 300,
+          }}
+        >
+          <View>
+            <View style={{backgroundColor: Theme.colors.surface, borderTopRadius: Theme.roundness, padding: 10,}}>
+              <Headline style={[styles.bold, {fontSize: 20, lineHeight: 20,}]}>Shop by Women's.</Headline>
+            </View>
+            <View style={[styles.alignItemsCenter, styles.flexOne, styles.justifyContentCenter,]}>
+              <Image
+                source={{uri: pageACF?.shop_by_womens_image}}
+                style={{
+                  maxHeight: 400,
+                  minHeight: 280,
+                  maxWidth: 400,
+                  minWidth: 280,
+                }}
+              />
+            </View>
+          </View>
+        </TouchableRipple>
+      </Surface>
+      {/* The shop by color component is wrapped in this View tag. */}
       <View style={{marginBottom: 10, marginTop: 20,}}>
         <View style={{ marginBottom: 5, marginHorizontal: 20, }}>
           <Headline style={[styles.bold,]}>Shop By Color.</Headline>
@@ -123,5 +201,8 @@ const styles = StyleSheet.create({
   },
   justifyContentCenter: {
     justifyContent: 'center',
+  },
+  justifyContentSpaceBetween: {
+    justifyContent: 'space-between',
   },
 })

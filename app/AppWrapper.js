@@ -1,4 +1,4 @@
-import '../firebase.config'
+import '../config/firebase.config'
 import store from "../redux/stores/store";
 import AppContainer from './AppContainer'
 import { Provider as StoreProvider } from "react-redux";

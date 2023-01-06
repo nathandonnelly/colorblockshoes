@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { ActivityIndicator, Button, Headline, Subheading, Text, TouchableRipple } from 'react-native-paper'
+import { ActivityIndicator, Button, Headline, Subheading, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import ProductCard from '../../components/modules/ProductCard'
 import Footer from '../../components/layouts/Footer'
 
 const ShopScreen = (props) => {
+
+  const Theme = useTheme();
 
   const products = useSelector(state => state.store.products);
   const [productsToRender, setProductsToRender] = useState(20);
@@ -23,7 +25,7 @@ const ShopScreen = (props) => {
   } else return (
     <ScrollView>
       <View style={{margin: 20,}}>
-        <Headline style={[styles.headline,]}>Shop</Headline>
+        <Headline style={[styles.bold, styles.headline,]}>Shop</Headline>
       </View>
       <View style={[styles.flexDirectionRow, styles.flexOne, styles.flexWrap, styles.justifyContentCenter,]}>
         {products.slice(0, productsToRender).map(product => (
@@ -47,6 +49,7 @@ const ShopScreen = (props) => {
             onPress={() => { loadMoreProducts() }}
             style={{
               borderRadius: 0,
+              backgroundColor: Theme.colors.colorblockBlue,
             }}
           >
             Load More Products
@@ -64,6 +67,9 @@ const styles = StyleSheet.create({
   alignItemsCenter: {
     alignItems: 'center',
   },
+  bold: {
+    fontWeight: "bold",
+  },
   container: {
     alignItems: 'center',
     flex: 1,
@@ -80,7 +86,6 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 30,
-    fontWeight: "600",
     lineHeight: 30,
   },
   justifyContentCenter: {

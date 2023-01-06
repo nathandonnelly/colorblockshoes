@@ -1,12 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { ActivityIndicator, Button, Headline, Subheading, Text } from 'react-native-paper'
+import { ActivityIndicator, Button, Headline, Subheading, Text, useTheme } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import Footer from '../../components/layouts/Footer'
 import ProductCard from '../../components/modules/ProductCard'
 
 const ProductCategoryScreen = (props) => {
   const { category } = props.route.params;
+
+  const Theme = useTheme();
 
   const products = useSelector(state => state.store.products);
   const [productCategory, setProductCategory] = useState(null);
@@ -82,6 +84,7 @@ const ProductCategoryScreen = (props) => {
             onPress={() => { loadMoreProducts() }}
             style={{
               borderRadius: 0,
+              backgroundColor: Theme.colors.colorblockBlue,
             }}
           >
             Load More Products

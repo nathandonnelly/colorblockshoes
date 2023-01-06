@@ -42,7 +42,7 @@ const MainDrawerContent = (props) => {
           <Drawer.Item  
             icon="bag-personal"
             label="Bag"
-            onPress={() => { props.navigation.navigate("CartScreen") }}
+            onPress={() => { props.navigation.navigate("CartScreen"); }}
             right={() => (
               <Badge
                 style={{
@@ -61,18 +61,15 @@ const MainDrawerContent = (props) => {
         </Drawer.Section>
         {
           Dimensions.width > 768 ? null : (
-            <Drawer.Section>
-              <Drawer.Item
-                icon="shoe-formal"
-                label="Men's Shoes"
-                onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "mens"})}}
-              />
-              <Drawer.Item
-                icon="shoe-heel"
-                label="Women's Shoes"
-                onPress={() => { props.navigation.navigate("ProductCategoryScreen", {category: "womens"})}}
-              />
-            </Drawer.Section>
+            <View>
+              <Drawer.Section>
+                <Drawer.Item
+                  icon="account"
+                  label="Account"
+                  onPress={() => {props.navigation.navigate("AccountScreen")} }
+                />
+              </Drawer.Section>
+            </View>
           )
         }
         {

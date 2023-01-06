@@ -1,4 +1,4 @@
-import '../firebase.config'
+import '../config/firebase.config'
 import store from "../redux/stores/store"
 import React, { useEffect, useState } from 'react'
 import AppContainer from './AppContainer'

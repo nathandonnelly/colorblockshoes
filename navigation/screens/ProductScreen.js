@@ -9,18 +9,28 @@ import ProductCategory from '../../components/submodules/ProductCategory'
 import Footer from '../../components/layouts/Footer'
 
 const ProductScreen = (props) => {
+  
+  // Params.
   const { slug } = props.route.params;
+  
+  // Hooks.
   const dispatch = useDispatch();
   const Dimensions = useWindowDimensions();
   const Theme = useTheme();
+
+  // Global state.
   const products = useSelector(state => state.store.products);
-  const [product, setProduct] = useState(null);
-  const [productImage, setProductImage] = useState(null);
-  const [availableSizes, setAvailableSizes] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
-  const [SnackbarMessage, setSnackbarMessage] = useState(null);
+
+  // Route state.
+  const [ product, setProduct ] = useState(null);
+  const [ productImage, setProductImage ] = useState(null);
+  const [ availableSizes, setAvailableSizes ] = useState(null);
+  const [ selectedSize, setSelectedSize ] = useState(null);
+  const [ selectedQuantity, setSelectedQuantity ] = useState(1);
+  const [ isSnackbarVisible, setIsSnackbarVisible ] = useState(false);
+  const [ snackbarMessage, setSnackbarMessage ] = useState(null);
+
+  // Calculations.
   const productImageSize = Dimensions.width > 400 ? 300 : 200;
   
   // Checks to see if there's a product and it matches the slug.
@@ -110,7 +120,7 @@ const ProductScreen = (props) => {
   }
 
   // Cart functions.
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const selectedVariation = findProductSizeVariation(); 
     const cartObject = {
       product: product,
@@ -118,7 +128,6 @@ const ProductScreen = (props) => {
       quantity: selectedQuantity,
       variation: selectedVariation,
     }
-
     if (product.categories[0].name.toLowerCase().includes("shoes") && selectedSize !== null) {
       dispatch(addToCart(cartObject));
       setSnackbarMessage("You added " + selectedQuantity + " " + product.name + " in size " + selectedSize + " to your bag.");
@@ -132,7 +141,6 @@ const ProductScreen = (props) => {
       onToggleSnackbar();
       return;
     }
-
   }
 
   // Handle Snackbar.
@@ -266,7 +274,7 @@ const ProductScreen = (props) => {
             backgroundColor: Theme.colors.background,
           }}
         >
-          <Text>{SnackbarMessage}</Text>
+          <Text>{snackbarMessage}</Text>
         </Snackbar>
       </Portal>
     </ScrollView>

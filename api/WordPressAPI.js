@@ -18,6 +18,7 @@ export const WooCommerceAPI = axios.create({
 // Fetch paginated products by 50.
 export const getProducts = async (pageNum) => {
   const productData = await WooCommerceAPI.get("/products", {
+    crossDomain: true,
     params: {
       page: pageNum,
       per_page: 50,
@@ -36,24 +37,13 @@ export const getProducts = async (pageNum) => {
 };
 
 // Create an order.
-export const createOrder = async ( 
-  paymentMethod,
-  paymentMethodTitle,
-  isPaid,
-  billingObject,
-  shippingObject,
+export const createOrder = async (
   lineItemsArray,
-  shippingLinesArray 
 ) => {
   const createdOrder = await WooCommerceAPI.post("/orders", {
+    crossDomain: true,
     params: {
-      payment_method: paymentMethod,
-      payment_method_title: paymentMethodTitle,
-      set_paid: isPaid,
-      billing: billingObject,
-      shipping: shippingObject,
       line_items: lineItemsArray,
-      shipping_lines: shippingLinesArray,
     }
   })
   .then(response => response.data)
@@ -68,6 +58,7 @@ export const createOrder = async (
 // Fetch ACF content on specified page.
 export const getPageACF = async (pageSlug) => {
   const pageACFData = await WordPressAPI.get("/pages", {
+    crossDomain: true,
     params: {
       slug: pageSlug,
       _fields: "acf",

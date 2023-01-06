@@ -4,15 +4,24 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "site": "colorblockshoes",
     "public": "web-build",
+    "site": "colorblockshoes",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "functions": {
+    "source": "functions"
   }
 }

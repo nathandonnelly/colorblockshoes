@@ -14,6 +14,6 @@ export const appSlice = createSlice({
   },
 });
 
-export const { updateIsLoading } = appSlice.actions
+export const { updateIsAuthenticated, updateIsLoading } = appSlice.actions
 
 export default appSlice.reducer

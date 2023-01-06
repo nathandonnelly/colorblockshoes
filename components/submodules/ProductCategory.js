@@ -11,8 +11,6 @@ const ProductCategory = (props) => {
   
   const Theme = useTheme();
 
-
-
   if (!props.product) {
     return (
       <ActivityIndicator />

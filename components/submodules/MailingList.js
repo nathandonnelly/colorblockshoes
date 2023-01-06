@@ -7,9 +7,11 @@ const MailingList = (props) => {
   const Dimensions = useWindowDimensions();
   const Theme = useTheme();
   const [ emailAddress, setEmailAddress ] = useState("");
+  const [ mailingListMessage, setMailingListMessage ] = useState("Be the first to know about new styles.");
 
   const handleSubscribeToMailingList = () => {
     setEmailAddress("");
+    setMailingListMessage("You're signed up!");
   }
 
   return (
@@ -29,11 +31,11 @@ const MailingList = (props) => {
           <Headline style={[styles.bold, {marginTop: 10,}]}>Get Our Newsletter.</Headline>
           <IconButton icon="email" onPress={() => {}} size={12} style={{margin: 0, padding: 0,}} />
         </View>
-        <Subheading>Be the first to know about new styles.</Subheading>
+        <Subheading>{mailingListMessage}</Subheading>
         <View style={[styles.flexDirectionRow,]}>
           <Image
             source={{
-              uri: "https://colorblockshoes-com.stackstaging.com/wp-content/uploads/mens-high-top-canvas-shoes-white-left-62223ca57fe6b.png",
+              uri: "https://cms.nathandonnelly.com/wp-content/uploads/mens-high-top-canvas-shoes-white-left-62223ca57fe6b.png",
             }}
             style={{
               height: 100,
@@ -42,8 +44,8 @@ const MailingList = (props) => {
           />
           <View style={[styles.flexOne,]}>
             <TextInput
-              activeOutlineColor={Theme.colors.colorblockYellowDark}
-              activeUnderlineColor={Theme.colors.colorblockYellowDark}
+              activeOutlineColor={Theme.colors.accent}
+              activeUnderlineColor={Theme.colors.accent}
               autoComplete="email"
               autoCorrect={false}
               keyboardType="email-address"
@@ -51,7 +53,7 @@ const MailingList = (props) => {
               label="E-Mail Address"
               onChangeText={(text) => { setEmailAddress(text); }}
               onSubmitEditing={() => { handleSubscribeToMailingList() }}
-              outlineColor={Theme.colors.colorblockYellowDark}
+              outlineColor={Theme.colors.accent}
               right={<TextInput.Icon name="chevron-right" onPress={() => { handleSubscribeToMailingList() }} />}
               style={{margin: 20,}}
               value={emailAddress}
